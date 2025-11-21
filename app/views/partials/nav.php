@@ -1,0 +1,1 @@
+<!-- Navigation partial (inclus dans header) -->
