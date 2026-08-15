@@ -117,15 +117,15 @@
 
                         <div class="demo-account">
                             <div class="demo-header">
-                                <i class="fas fa-flask"></i>
-                                <span>Compte de démonstration</span>
+                                <i class="fas fa-user-shield"></i>
+                                <span>Premier administrateur</span>
                             </div>
                             <div class="demo-credentials">
                                 <div class="credential">
-                                    <strong>Email:</strong> admin@nest.com
+                                    <i class="fas fa-info-circle"></i> Le premier compte créé devient
                                 </div>
                                 <div class="credential">
-                                    <strong>Mot de passe:</strong> password
+                                    <strong>administrateur (super_admin)</strong>
                                 </div>
                             </div>
                         </div>
@@ -136,6 +136,9 @@
                         <div class="form-header">
                             <h2>Créer un compte</h2>
                             <p>Rejoignez notre écosystème en quelques secondes</p>
+                            <p style="margin-top:8px; font-size:0.85rem; color:var(--primary-blue); background:rgba(0,114,255,0.08); padding:8px 12px; border-radius:8px;">
+                                <i class="fas fa-user-shield"></i> Le premier compte créé devient administrateur.
+                            </p>
                         </div>
 
                         <div class="form-group">

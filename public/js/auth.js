@@ -226,13 +226,8 @@ class AuthManager {
     }
 
     setupDemoAccount() {
-        const demoCredentials = document.querySelector('.demo-credentials');
-        if (demoCredentials) {
-            demoCredentials.addEventListener('click', () => {
-                document.getElementById('login-email').value = 'admin@nest.com';
-                document.getElementById('login-password').value = 'password';
-            });
-        }
+        // Plus de compte de démonstration pré-créé :
+        // le premier compte créé devient automatiquement administrateur.
     }
 
     async handleLogin() {
@@ -282,8 +277,10 @@ class AuthManager {
             if (data.success) {
                 console.log('🎉 Connexion réussie');
                 this.showSuccess('login', 'Connexion réussie ! Redirection...');
+                const role = (data.user && data.user.role) || '';
+                const target = (role === 'admin' || role === 'super_admin') ? '/nest/?page=admin' : '/nest/';
                 setTimeout(() => {
-                    window.location.href = '/nest/?page=dashboard';
+                    window.location.href = target;
                 }, 1500);
             } else {
                 console.log('❌ Erreur connexion:', data.message);
@@ -334,10 +331,11 @@ class AuthManager {
             const data = await response.json();
 
             if (data.success) {
-                let successMessage = 'Compte créé avec succès ! Redirection vers la connexion...';
-                
+                // Message serveur (ex. premier utilisateur devenu administrateur)
+                let successMessage = data.message || 'Compte créé avec succès ! Redirection vers la connexion...';
+
                 // Message personnalisé si newsletter activée
-                if (formData.newsletter_subscribed) {
+                if (formData.newsletter_subscribed && !data.message) {
                     successMessage += ' Vous êtes inscrit à notre newsletter.';
                 }
                 
@@ -541,8 +539,10 @@ class AuthManager {
             const data = await response.json();
             
             if (data.authenticated && window.location.pathname.includes('login')) {
-                // Rediriger vers le dashboard si déjà connecté
-                window.location.href = '/nest/?page=dashboard';
+                // Rediriger vers l'espace approprié si déjà connecté
+                const role = (data.user && data.user.role) || '';
+                const target = (role === 'admin' || role === 'super_admin') ? '/nest/?page=admin' : '/nest/';
+                window.location.href = target;
             }
         } catch (error) {
             console.error('Session check error:', error);

@@ -1,12 +1,11 @@
 <?php
 // nest/app/api/auth/check-session.php
+require_once __DIR__ . '/../../config.php';
+
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: ' . APP_URL);
 
-require_once __DIR__ . '/../../config.php';
 require_once __DIR__ . '/../../models/User.php';
-
-session_start();
 
 $response = [
     'authenticated' => false,

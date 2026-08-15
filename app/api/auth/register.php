@@ -66,8 +66,11 @@ try {
         exit;
     }
 
-    // Create new user with additional fields
-    $result = User::create($name, $email, $password, $accepted_terms, $newsletter_subscribed);
+    // Create new user with additional fields.
+    // Le PREMIER utilisateur inscrit devient automatiquement administrateur.
+    $isFirstUser = (User::countAll() === 0);
+    $role = $isFirstUser ? 'super_admin' : 'user';
+    $result = User::create($name, $email, $password, $accepted_terms, $newsletter_subscribed, $role);
     
     if ($result) {
         // Get the newly created user
@@ -77,17 +80,25 @@ try {
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['user_name'] = $user['name'];
         $_SESSION['user_email'] = $user['email'];
-        
+        $_SESSION['user_role'] = $user['role'] ?? $role;
+        $_SESSION['logged_in'] = true;
+        $_SESSION['login_time'] = time();
+
         // Log the registration for analytics
-        error_log("New user registered: " . $email . " | Newsletter: " . ($newsletter_subscribed ? 'yes' : 'no'));
+        error_log("New user registered: " . $email . " | Role: " . ($isFirstUser ? 'super_admin (premier utilisateur)' : 'user') . " | Newsletter: " . ($newsletter_subscribed ? 'yes' : 'no'));
         
         echo json_encode([
             'success' => true, 
-            'message' => 'Compte créé avec succès!',
+            'message' => $isFirstUser
+                ? 'Compte créé avec succès ! Vous êtes le premier utilisateur : vous êtes maintenant administrateur.'
+                : 'Compte créé avec succès!',
+            'is_admin' => $isFirstUser,
+            'role' => $role,
             'user' => [
                 'id' => $user['id'],
                 'name' => $user['name'],
                 'email' => $user['email'],
+                'role' => $role,
                 'newsletter_subscribed' => $newsletter_subscribed
             ]
         ]);

@@ -10,8 +10,21 @@ define('DB_CHARSET', 'utf8mb4');
 
 // ==================== CONFIGURATION DE L'APPLICATION ====================
 define('APP_NAME', 'Nest');
-define('APP_VERSION', '1.0.0');
+define('APP_VERSION', '3.0.0');
 define('APP_ENV', 'development'); // development, production
+define('APP_TAGLINE', 'Ingénierie logicielle & électronique');
+
+// ==================== COORDONNÉES & DEVISES ====================
+define('APP_EMAIL', 'contact.nestcorp@gmail.com');
+define('APP_PHONE', '+243 84 01 49 027');
+define('APP_LOCATION', 'Afrique (RDC)');
+define('APP_CURRENCY', 'USD');
+define('APP_CURRENCY_SYMBOL', '$');
+
+// ==================== MODES DE PAIEMENT ====================
+define('PRICING_FREE', 'free');
+define('PRICING_ONE_TIME', 'one_time');
+define('PRICING_SUBSCRIPTION', 'subscription');
 
 // URLs et Chemins ABSOLUS
 define('APP_URL', 'http://localhost/nest');
@@ -34,48 +47,10 @@ define('FONTS_URL', PUBLIC_URL . 'fonts/');
 define('VENDOR_URL', PUBLIC_URL . 'vendor/');
 define('UPLOADS_URL', PUBLIC_URL . 'uploads/');
 
-// ==================== CONFIGURATION DES PLATEFORMES ====================
-define('PLATFORM_SKILL', 'Skill Platform');
-define('PLATFORM_SHOPPING', 'i-Shopping');
-define('PLATFORM_PAYMENT', 'Pay & Wise');
-define('PLATFORM_MAILER', 'Mailer Pro');
-
-// ==================== FONCTIONS UTILITAIRES ====================
-function url($page = 'home', $params = []) {
-    $queryString = http_build_query(array_merge(['page' => $page], $params));
-    return "/nest/index.php?" . $queryString;
-}
-
-function asset($path) {
-    return PUBLIC_URL . ltrim($path, '/');
-}
-
-function css($file) {
-    return CSS_URL . ltrim($file, '/');
-}
-
-function js($file) {
-    return JS_URL . ltrim($file, '/');
-}
-
-function image($file) {
-    return IMAGES_URL . ltrim($file, '/');
-}
-
-function vendor($file) {
-    return VENDOR_URL . ltrim($file, '/');
-}
-
-function redirect($page, $params = []) {
-    header('Location: ' . url($page, $params));
-    exit;
-}
-
-function isAuthenticated() {
-    return isset($_SESSION['user_id']) && !empty($_SESSION['user_id']);
-}
-
 // ==================== GESTION DES ERREURS ====================
+if (!is_dir(LOG_PATH)) {
+    @mkdir(LOG_PATH, 0775, true);
+}
 if (APP_ENV === 'development') {
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
@@ -87,7 +62,6 @@ if (APP_ENV === 'development') {
 }
 
 // ==================== SECURITE ====================
-// Dans config.php, ajoutez:
 define('CSRF_TOKEN_NAME', 'nest_csrf_token');
 define('SESSION_TIMEOUT', 86400); // 24 heures en secondes
 define('MAX_LOGIN_ATTEMPTS', 5);
@@ -95,11 +69,28 @@ define('LOGIN_TIMEOUT', 900); // 15 minutes en secondes
 
 // Configuration de sécurité
 ini_set('session.cookie_httponly', 1);
-ini_set('session.cookie_secure', 1); // À activer en production avec HTTPS
 ini_set('session.use_strict_mode', 1);
+if (APP_ENV === 'production') {
+    ini_set('session.cookie_secure', 1);
+}
 
 // ==================== DÉMARRAGE DE SESSION ====================
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
+}
+
+// ==================== HELPER CSRF ====================
+function csrfToken() {
+    if (empty($_SESSION[CSRF_TOKEN_NAME])) {
+        $_SESSION[CSRF_TOKEN_NAME] = bin2hex(random_bytes(32));
+    }
+    return $_SESSION[CSRF_TOKEN_NAME];
+}
+function csrfField() {
+    return '<input type="hidden" name="csrf_token" value="' . csrfToken() . '">';
+}
+function csrfVerify() {
+    $token = $_POST['csrf_token'] ?? '';
+    return !empty($token) && hash_equals($_SESSION[CSRF_TOKEN_NAME] ?? '', $token);
 }
 ?>

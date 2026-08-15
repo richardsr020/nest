@@ -1,98 +1,88 @@
-// Configuration de l'API
-const API_BASE_URL = '/api';
+// nest/public/js/main.js
+// Animations globales du thème Nest
 
-// Textes pour le diaporama
-const textSlides = [
-    "Votre écosystème numérique complet",
-    "Connecter talents et opportunités",
-    "Simplifier vos achats en ligne", 
-    "Sécuriser vos transactions",
-    "Faciliter vos communications"
-];
+document.addEventListener('DOMContentLoaded', function () {
 
-let currentSlide = 0;
+    // Navbar scroll
+    const nav = document.querySelector('.site-nav');
+    if (nav) {
+        window.addEventListener('scroll', () => {
+            nav.classList.toggle('scrolled', window.scrollY > 40);
+        });
+    }
 
-// Fonction pour changer le texte animé
-function changeText() {
-    const animatedText = document.getElementById('animated-text');
-    if (!animatedText) return;
-    
-    animatedText.style.opacity = 0;
-    
-    setTimeout(() => {
-        currentSlide = (currentSlide + 1) % textSlides.length;
-        animatedText.textContent = textSlides[currentSlide];
-        animatedText.style.opacity = 1;
-    }, 500);
-}
+    // Menu mobile
+    const burger = document.getElementById('navBurger');
+    const links = document.getElementById('navLinks');
+    if (burger && links) {
+        burger.addEventListener('click', () => links.classList.toggle('open'));
+        links.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => links.classList.remove('open'));
+        });
+    }
 
-// Navigation entre les pages
-function navigateTo(page) {
-    window.location.href = page;
-}
-
-// Navbar scroll effect
-function initNavbarScroll() {
-    const navbar = document.getElementById('navbar');
-    if (!navbar) return;
-    
-    window.addEventListener('scroll', function() {
-        if (window.scrollY > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
+    // Particules
+    const particlesEl = document.getElementById('particles');
+    if (particlesEl) {
+        for (let i = 0; i < 18; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            const size = Math.random() * 5 + 2;
+            p.style.width = size + 'px';
+            p.style.height = size + 'px';
+            p.style.left = Math.random() * 100 + '%';
+            p.style.top = Math.random() * 100 + '%';
+            p.style.animationDelay = Math.random() * 5 + 's';
+            p.style.opacity = Math.random() * 0.35 + 0.1;
+            particlesEl.appendChild(p);
         }
-    });
-}
+    }
 
-// Initialisation au chargement de la page
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialiser le diaporama de texte
-    const animatedText = document.getElementById('animated-text');
-    if (animatedText) {
-        // Démarrer immédiatement
-        changeText();
-        // Puis continuer toutes les 3 secondes
-        setInterval(changeText, 3000);
-    }
-    
-    // Initialiser la navbar
-    initNavbarScroll();
-    
-    // Gestionnaire pour le bouton "Commencer"
-    const ctaButton = document.getElementById('cta-button');
-    if (ctaButton) {
-        ctaButton.addEventListener('click', function(e) {
-            e.preventDefault();
-            navigateTo('/auth');
+    // Compteurs animés
+    const counters = document.querySelectorAll('.counter[data-target]');
+    counters.forEach(counter => {
+        const target = parseInt(counter.getAttribute('data-target'));
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const duration = 1500;
+                    const start = performance.now();
+                    const step = (now) => {
+                        const progress = Math.min((now - start) / duration, 1);
+                        counter.textContent = Math.ceil(progress * target);
+                        if (progress < 1) requestAnimationFrame(step);
+                        else counter.textContent = target;
+                    };
+                    requestAnimationFrame(step);
+                    observer.unobserve(counter);
+                }
+            });
+        }, { threshold: 0.3 });
+        observer.observe(counter);
+    });
+
+    // Révélation au scroll
+    const revealEls = document.querySelectorAll('.animate-on-scroll');
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                revealObserver.unobserve(entry.target);
+            }
         });
-    }
-    
-    // Gestionnaires de navigation
-    const homeLink = document.getElementById('home-link');
-    const authLink = document.getElementById('auth-link');
-    const entitiesLink = document.getElementById('entities-link');
-    
-    if (homeLink) {
-        homeLink.addEventListener('click', function(e) {
-            e.preventDefault();
-            navigateTo('/');
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    revealEls.forEach(el => revealObserver.observe(el));
+
+    // Smooth scroll ancres
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            const targetId = this.getAttribute('href');
+            if (targetId === '#' || targetId.length < 2) return;
+            const target = document.querySelector(targetId);
+            if (target) {
+                e.preventDefault();
+                window.scrollTo({ top: target.offsetTop - 90, behavior: 'smooth' });
+            }
         });
-    }
-    
-    if (authLink) {
-        authLink.addEventListener('click', function(e) {
-            e.preventDefault();
-            navigateTo('/auth');
-        });
-    }
-    
-    if (entitiesLink) {
-        entitiesLink.addEventListener('click', function(e) {
-            e.preventDefault();
-            navigateTo('/entities');
-        });
-    }
-    
-    console.log('Nest Software Corporation - Initialisé');
+    });
 });

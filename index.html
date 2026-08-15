@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NestCorporation - Solutions Digitales & IA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #0066FF;
+            --primary-turquoise: #00D4FF;
+            --dark-blue: #0052CC;
+            --light-turquoise: #80EAFF;
+            --black: #000000;
+            --dark-gray: #1A1A1A;
+            --light-gray: #F5F5F5;
+        }
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        h1, h2, h3, h4, .font-display {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(90deg, var(--primary-blue), var(--primary-turquoise));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-turquoise) 100%);
+        }
+        
+        /* Animations de base */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        @keyframes slide-up {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slide-in-left {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        @keyframes slide-in-right {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        @keyframes fade-in {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        @keyframes rotate-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes typewriter {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        
+        /* Classes d'animation */
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .animate-pulse-glow {
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+        
+        .animate-slide-up {
+            animation: slide-up 0.8s ease-out forwards;
+        }
+        
+        .animate-slide-left {
+            animation: slide-in-left 0.8s ease-out forwards;
+        }
+        
+        .animate-slide-right {
+            animation: slide-in-right 0.8s ease-out forwards;
+        }
+        
+        .animate-fade-in {
+            animation: fade-in 1s ease-out forwards;
+        }
+        
+        .animate-gradient {
+            background-size: 200% 200%;
+            animation: gradient-shift 3s ease infinite;
+        }
+        
+        .animate-rotate-slow {
+            animation: rotate-slow 20s linear infinite;
+        }
+        
+        .animate-typewriter {
+            overflow: hidden;
+            white-space: nowrap;
+            animation: typewriter 2s steps(40) 1s 1 normal both;
+        }
+        
+        .animate-blink {
+            animation: blink 1s step-end infinite;
+        }
+        
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Styles des cartes sans bordures */
+        .card-modern {
+            background: white;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .card-modern::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 102, 255, 0.05), transparent);
+            transition: left 0.7s ease;
+        }
+        
+        .card-modern:hover::before {
+            left: 100%;
+        }
+        
+        .card-modern:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 30px 60px rgba(0, 102, 255, 0.15);
+        }
+        
+        .section-spacing {
+            padding-top: 120px;
+            padding-bottom: 120px;
+        }
+        
+        /* Effets spéciaux */
+        .hero-grid {
+            background-image: 
+                linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-grid::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 80%, rgba(0, 102, 255, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(0, 212, 255, 0.1) 0%, transparent 50%);
+            animation: gradient-shift 8s ease infinite;
+        }
+        
+        .grid-pattern {
+            background-color: #ffffff;
+            background-image: radial-gradient(rgba(0, 102, 255, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .grid-pattern::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            right: -50%;
+            bottom: -50%;
+            background: linear-gradient(45deg, transparent 30%, rgba(0, 102, 255, 0.03) 50%, transparent 70%);
+            animation: rotate-slow 20s linear infinite;
+        }
+        
+        /* Navigation animée */
+        .nav-link {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--primary-turquoise));
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            transform: translateX(0);
+        }
+        
+        /* Effet de particules */
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .particle {
+            position: absolute;
+            background: linear-gradient(90deg, var(--primary-blue), var(--primary-turquoise));
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite;
+        }
+        
+        /* Statistiques animées */
+        .stat-number {
+            font-variant-numeric: tabular-nums;
+        }
+        
+        .counter {
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-900 overflow-x-hidden">
+    <!-- Navigation Minimaliste -->
+    <nav class="fixed w-full z-50 py-6 bg-white/90 backdrop-blur-md shadow-sm">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <!-- Logo avec animation -->
+            <div class="flex items-center">
+                <div class="h-14 w-18 rounded-lg mr-3 overflow-hidden relative group">
+                    <img src="nestlogo.jpg" alt="NestCorporation Logo" class="h-full w-full object-contain group-hover:scale-110 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-gradient-to-r from-blue-500/0 via-cyan-500/20 to-blue-500/0 animate-gradient opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                </div>
+                <!-- <span class="text-2xl font-bold text-black font-display">Nest<span class="gradient-text">Corporation</span></span> -->
+            </div>
+            
+            <!-- Menu Desktop -->
+            <div class="hidden md:flex space-x-12">
+                <a href="#accueil" class="font-medium text-gray-700 hover:text-black transition-colors nav-link py-2">
+                    Accueil
+                </a>
+                <a href="#services" class="font-medium text-gray-700 hover:text-black transition-colors nav-link py-2">
+                    Services
+                </a>
+                <a href="#ia" class="font-medium text-gray-700 hover:text-black transition-colors nav-link py-2">
+                    IA
+                </a>
+                <a href="#contact" class="font-medium text-gray-700 hover:text-black transition-colors nav-link py-2">
+                    Contact
+                </a>
+            </div>
+            
+            <!-- CTA Desktop -->
+            <a href="#contact" class="hidden md:block bg-black text-white px-8 py-3 rounded-lg font-medium hover:bg-gray-900 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                Nous contacter
+            </a>
+            
+            <!-- Menu Mobile -->
+            <button id="mobileMenuBtn" class="md:hidden text-black text-2xl transform hover:scale-110 transition-transform">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section - Version Animée -->
+    <section id="accueil" class="pt-40 pb-32 hero-grid section-spacing">
+        <!-- Particules -->
+        <div class="particles" id="particles"></div>
+        
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="max-w-6xl mx-auto text-center">
+                <!-- Badge -->
+                <div class="inline-flex items-center space-x-2 bg-white/80 backdrop-blur-sm rounded-full px-4 py-2 mb-8 animate-slide-up shadow-lg">
+                    <div class="w-2 h-2 gradient-bg rounded-full animate-pulse-glow"></div>
+                    <span class="text-sm font-medium text-gray-700">Solutions Digitales depuis 2010</span>
+                </div>
+                
+                <!-- Titre Principal -->
+                <h1 class="text-6xl md:text-8xl font-bold mb-8 tracking-tight">
+                    <span class="block text-black animate-slide-up" style="animation-delay: 0.2s">DIGITAL</span>
+                    <span class="gradient-text animate-gradient animate-slide-up" style="animation-delay: 0.4s">EXCELLENCE</span>
+                </h1>
+                
+                <!-- Sous-titre -->
+                <p class="text-2xl md:text-3xl text-gray-600 mb-16 max-w-3xl mx-auto animate-slide-up" style="animation-delay: 0.6s">
+                    Nous créons l'avenir numérique pour les entreprises les plus innovantes du monde.
+                </p>
+                
+                <!-- Icônes Animées -->
+                <div class="grid md:grid-cols-3 gap-8 mb-16">
+                    <!-- Chatbot IA -->
+                    <div class="animate-on-scroll">
+                        <div class="relative mx-auto mb-6">
+                            <div class="w-24 h-24 gradient-bg rounded-2xl flex items-center justify-center mx-auto mb-4 animate-float">
+                                <i class="fas fa-robot text-white text-3xl"></i>
+                            </div>
+                            <!-- Animation de bulle de chat -->
+                            <div class="absolute -top-2 -right-2 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-lg animate-pulse-glow">
+                                <i class="fas fa-comment text-blue-500 text-sm"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold text-black mb-2">Chatbots IA Intelligents</h3>
+                        <p class="text-gray-600">Service client 24/7 automatisé</p>
+                        <!-- Barre de progression -->
+                        <div class="mt-4 w-24 h-1 bg-gray-200 rounded-full mx-auto overflow-hidden">
+                            <div class="h-full gradient-bg rounded-full animate-progress" style="width: 95%; animation-delay: 0.5s;"></div>
+                        </div>
+                        <div class="text-sm text-gray-500 mt-1">95% précision</div>
+                    </div>
+                    
+                    <!-- Protection Fraudes -->
+                    <div class="animate-on-scroll" style="animation-delay: 0.1s">
+                        <div class="relative mx-auto mb-6">
+                            <div class="w-24 h-24 gradient-bg rounded-2xl flex items-center justify-center mx-auto mb-4 animate-float" style="animation-delay: 1s">
+                                <i class="fas fa-shield-alt text-white text-3xl"></i>
+                            </div>
+                            <!-- Animation de bouclier -->
+                            <div class="absolute -top-1 -right-1 w-10 h-10 border-4 border-white/30 rounded-full animate-ping"></div>
+                        </div>
+                        <h3 class="text-xl font-bold text-black mb-2">Protection Anti-Fraude</h3>
+                        <p class="text-gray-600">Détection en temps réel</p>
+                        <!-- Indicateur de sécurité -->
+                        <div class="mt-4 flex justify-center space-x-1">
+                            <div class="w-4 h-4 gradient-bg rounded-full animate-pulse-glow"></div>
+                            <div class="w-4 h-4 gradient-bg rounded-full animate-pulse-glow" style="animation-delay: 0.2s"></div>
+                            <div class="w-4 h-4 gradient-bg rounded-full animate-pulse-glow" style="animation-delay: 0.4s"></div>
+                        </div>
+                        <div class="text-sm text-gray-500 mt-1">99.9% efficacité</div>
+                    </div>
+                    
+                    <!-- Optimisation -->
+                    <div class="animate-on-scroll" style="animation-delay: 0.2s">
+                        <div class="relative mx-auto mb-6">
+                            <div class="w-24 h-24 gradient-bg rounded-2xl flex items-center justify-center mx-auto mb-4 animate-float" style="animation-delay: 2s">
+                                <i class="fas fa-chart-line text-white text-3xl"></i>
+                            </div>
+                            <!-- Animation de flèche montante -->
+                            <div class="absolute top-0 right-0 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center animate-bounce">
+                                <i class="fas fa-arrow-up text-white text-xs"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold text-black mb-2">Optimisation Avancée</h3>
+                        <p class="text-gray-600">Performance maximisée</p>
+                        <!-- Graphique animé -->
+                        <div class="mt-4 flex items-end justify-center space-x-1 h-8">
+                            <div class="w-3 bg-gray-300 rounded-t animate-graph-bar" style="height: 30%; animation-delay: 0.1s"></div>
+                            <div class="w-3 bg-gray-300 rounded-t animate-graph-bar" style="height: 50%; animation-delay: 0.2s"></div>
+                            <div class="w-3 gradient-bg rounded-t animate-graph-bar" style="height: 80%; animation-delay: 0.3s"></div>
+                            <div class="w-3 gradient-bg rounded-t animate-graph-bar" style="height: 100%; animation-delay: 0.4s"></div>
+                        </div>
+                        <div class="text-sm text-gray-500 mt-1">+60% efficience</div>
+                    </div>
+                </div>
+                
+                <!-- Stats Animées -->
+                <div class="flex justify-center space-x-16 mb-16">
+                    <div class="text-center animate-on-scroll">
+                        <div class="text-4xl font-bold text-black mb-2 stat-number counter" data-target="200">0</div>
+                        <div class="text-gray-600">Projets globaux</div>
+                    </div>
+                    <div class="text-center animate-on-scroll" style="animation-delay: 0.1s">
+                        <div class="text-4xl font-bold text-black mb-2 stat-number counter" data-target="40">0</div>
+                        <div class="text-gray-600">Pays desservis</div>
+                    </div>
+                    <div class="text-center animate-on-scroll" style="animation-delay: 0.2s">
+                        <div class="text-4xl font-bold text-black mb-2 stat-number counter" data-target="98">0</div>
+                        <div class="text-gray-600">Satisfaction</div>
+                    </div>
+                </div>
+                
+                <!-- CTA -->
+                <div class="flex justify-center space-x-6 animate-slide-up" style="animation-delay: 0.8s">
+                    <a href="#services" class="bg-black text-white px-10 py-4 rounded-lg font-medium text-lg hover:bg-gray-900 transition-all duration-300 inline-flex items-center transform hover:scale-105 shadow-lg hover:shadow-xl">
+                        Explorer nos services
+                        <i class="fas fa-arrow-right ml-3 group-hover:ml-4 transition-all duration-300"></i>
+                    </a>
+                    <a href="#ia" class="bg-gradient-to-r from-white to-gray-50 text-black px-10 py-4 rounded-lg font-medium text-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 shadow-lg">
+                        Découvrir l'IA
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section - Design Animé -->
+    <section id="services" class="py-32 bg-gray-50/50 section-spacing">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto mb-20 animate-on-scroll">
+                <h2 class="text-5xl md:text-6xl font-bold mb-8 text-center">
+                    <span class="text-black">Services</span>
+                    <span class="gradient-text block animate-gradient">Essentiels</span>
+                </h2>
+                <p class="text-xl text-gray-600 text-center">
+                    Des solutions digitales complètes pour transformer votre entreprise à l'ère numérique.
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Service 1 -->
+                <div class="card-modern rounded-2xl p-8 animate-on-scroll">
+                    <div class="mb-8">
+                        <div class="text-5xl mb-4 gradient-text animate-float">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4">Ingénierie Logicielle</h3>
+                        <p class="text-gray-600 mb-6">
+                            Développement de logiciels d'entreprise robustes et scalables, conçues pour répondre à vos besoins métiers spécifiques.
+                        </p>
+                        <ul class="space-y-3">
+                            <li class="flex items-center animate-slide-left" style="animation-delay: 0.1s">
+                                <div class="w-1.5 h-1.5 bg-black rounded-full mr-3 animate-pulse-glow"></div>
+                                <span>Architecture logiciel</span>
+                            </li>
+                            <li class="flex items-center animate-slide-left" style="animation-delay: 0.2s">
+                                <div class="w-1.5 h-1.5 bg-black rounded-full mr-3 animate-pulse-glow"></div>
+                                <span>Microservices & API</span>
+                            </li>
+                            <li class="flex items-center animate-slide-left" style="animation-delay: 0.3s">
+                                <div class="w-1.5 h-1.5 bg-black rounded-full mr-3 animate-pulse-glow"></div>
+                                <span>Sécurité & Conformité</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <a href="#" class="inline-flex items-center text-black font-medium group animate-fade-in">
+                        En savoir plus
+                        <i class="fas fa-arrow-right ml-2 group-hover:ml-3 transition-all duration-300 animate-pulse-glow"></i>
+                    </a>
+                </div>
+                
+                <!-- Service 2 -->
+                <div class="card-modern rounded-2xl p-8 animate-on-scroll" style="animation-delay: 0.1s">
+                    <div class="mb-8">
+                        <div class="text-5xl mb-4 gradient-text animate-float" style="animation-delay: 1s">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4">Expériences Digitales</h3>
+                        <p class="text-gray-600 mb-6">
+                            Création d'interfaces utilisateur intuitives et d'applications web/mobile performantes pour engager votre audience.
+                        </p>
+                        <ul class="space-y-3">
+                            <li class="flex items-center animate-slide-left" style="animation-delay: 0.2s">
+                                <div class="w-1.5 h-1.5 bg-black rounded-full mr-3 animate-pulse-glow"></div>
+                                <span>Web Applications Modernes</span>
+                            </li>
+                            <li class="flex items-center animate-slide-left" style="animation-delay: 0.3s">
+                                <div class="w-1.5 h-1.5 bg-black rounded-full mr-3 animate-pulse-glow"></div>
+                                <span>Applications Mobile Cross-Platform</span>
+                            </li>
+                            <li class="flex items-center animate-slide-left" style="animation-delay: 0.4s">
+                                <div class="w-1.5 h-1.5 bg-black rounded-full mr-3 animate-pulse-glow"></div>
+                                <span>Design UX/UI Avancé</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <a href="#" class="inline-flex items-center text-black font-medium group animate-fade-in">
+                        En savoir plus
+                        <i class="fas fa-arrow-right ml-2 group-hover:ml-3 transition-all duration-300 animate-pulse-glow"></i>
+                    </a>
+                </div>
+                
+                <!-- Service 3 -->
+                <div class="card-modern rounded-2xl p-8 animate-on-scroll" style="animation-delay: 0.2s">
+                    <div class="mb-8">
+                        <div class="text-5xl mb-4 gradient-text animate-float" style="animation-delay: 2s">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4">Intelligence Artificielle</h3>
+                        <p class="text-gray-600 mb-6">
+                            Intégration de solutions IA avancées pour automatiser, optimiser et transformer vos processus métiers.
+                        </p>
+                        <ul class="space-y-3">
+                            <li class="flex items-center animate-slide-left" style="animation-delay: 0.3s">
+                                <div class="w-1.5 h-1.5 bg-black rounded-full mr-3 animate-pulse-glow"></div>
+                                <span>chatbots</span>
+                            </li>
+                            <li class="flex items-center animate-slide-left" style="animation-delay: 0.4s">
+                                <div class="w-1.5 h-1.5 bg-black rounded-full mr-3 animate-pulse-glow"></div>
+                                <span>Automatisation Intelligente</span>
+                            </li>
+                            <li class="flex items-center animate-slide-left" style="animation-delay: 0.5s">
+                                <div class="w-1.5 h-1.5 bg-black rounded-full mr-3 animate-pulse-glow"></div>
+                                <span>Analyse Prédictive</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <a href="#" class="inline-flex items-center text-black font-medium group animate-fade-in">
+                        En savoir plus
+                        <i class="fas fa-arrow-right ml-2 group-hover:ml-3 transition-all duration-300 animate-pulse-glow"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section IA - Design Futuriste et Animé -->
+    <section id="ia" class="py-32 section-spacing grid-pattern">
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="grid md:grid-cols-2 gap-16 items-center">
+                <div class="animate-on-scroll">
+                    <h2 class="text-5xl md:text-6xl font-bold mb-8">
+                        <span class="text-black">L'IA au service</span>
+                        <span class="gradient-text block animate-gradient">de l'innovation</span>
+                    </h2>
+                    <p class="text-xl text-gray-600 mb-10">
+                        Nous intégrons l'intelligence artificielle dans le cœur de votre entreprise pour créer des avantages compétitifs durables.
+                    </p>
+                    
+                    <!-- Points clés IA -->
+                    <div class="space-y-8">
+                        <div class="flex items-start space-x-4 animate-on-scroll">
+                            <div class="flex-shrink-0 mt-1">
+                                <div class="w-8 h-8 gradient-bg rounded-full flex items-center justify-center animate-pulse-glow">
+                                    <i class="fas fa-bolt text-white text-sm"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-xl mb-2">Automatisation Avancée</h4>
+                                <p class="text-gray-600">
+                                    Réduction de 70% des tâches répétitives grâce à nos solutions IA sur mesure.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4 animate-on-scroll" style="animation-delay: 0.1s">
+                            <div class="flex-shrink-0 mt-1">
+                                <div class="w-8 h-8 gradient-bg rounded-full flex items-center justify-center animate-pulse-glow">
+                                    <i class="fas fa-chart-line text-white text-sm"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-xl mb-2">Décisions Data-Driven</h4>
+                                <p class="text-gray-600">
+                                    Des insights exploitables pour des décisions stratégiques plus éclairées.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4 animate-on-scroll" style="animation-delay: 0.2s">
+                            <div class="flex-shrink-0 mt-1">
+                                <div class="w-8 h-8 gradient-bg rounded-full flex items-center justify-center animate-pulse-glow">
+                                    <i class="fas fa-user-cog text-white text-sm"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-xl mb-2">Expériences Personnalisées</h4>
+                                <p class="text-gray-600">
+                                    Des interactions client uniques grâce à des algorithmes d'IA adaptatifs.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Visuel IA -->
+                <div class="relative animate-on-scroll" style="animation-delay: 0.2s">
+                    <div class="bg-white rounded-3xl p-8 shadow-2xl">
+                        <div class="space-y-6">
+                            <!-- Carte IA 1 -->
+                            <div class="flex items-center justify-between p-6 bg-gradient-to-r from-white to-gray-50/50 rounded-2xl hover:shadow-lg transition-all duration-300 hover:scale-102">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-12 h-12 bg-black rounded-lg flex items-center justify-center animate-float">
+                                        <i class="fas fa-robot text-white text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold">Chatbots Intelligents</h4>
+                                        <p class="text-sm text-gray-600">Service client 24/7</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-2xl font-bold gradient-text counter" data-target="99">0</div>
+                                    <div class="text-xs text-gray-500">Précision</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Carte IA 2 -->
+                            <div class="flex items-center justify-between p-6 bg-gradient-to-r from-white to-gray-50/50 rounded-2xl hover:shadow-lg transition-all duration-300 hover:scale-102" style="animation-delay: 0.1s">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-12 h-12 bg-black rounded-lg flex items-center justify-center animate-float" style="animation-delay: 1s">
+                                        <i class="fas fa-shield-alt text-white text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold">Détection de Fraude</h4>
+                                        <p class="text-sm text-gray-600">Sécurité renforcée</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-2xl font-bold gradient-text counter" data-target="95">0</div>
+                                    <div class="text-xs text-gray-500">Efficacité</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Carte IA 3 -->
+                            <div class="flex items-center justify-between p-6 bg-gradient-to-r from-white to-gray-50/50 rounded-2xl hover:shadow-lg transition-all duration-300 hover:scale-102" style="animation-delay: 0.2s">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-12 h-12 bg-black rounded-lg flex items-center justify-center animate-float" style="animation-delay: 2s">
+                                        <i class="fas fa-cogs text-white text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold">Optimisation</h4>
+                                        <p class="text-sm text-gray-600">Processus métier</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-2xl font-bold gradient-text counter" data-target="40">0</div>
+                                    <div class="text-xs text-gray-500">Gain temps</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Élément décoratif -->
+                    <div class="absolute -top-6 -right-6 w-24 h-24 gradient-bg rounded-full opacity-20 animate-float"></div>
+                    <div class="absolute -bottom-6 -left-6 w-16 h-16 bg-black rounded-full opacity-10 animate-rotate-slow"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Contact Animée -->
+    <section id="contact" class="py-32 section-spacing relative overflow-hidden">
+        <!-- Background animé -->
+        <div class="absolute inset-0 bg-gradient-to-br from-white via-gray-50 to-white animate-gradient" style="background-size: 400% 400%;"></div>
+        
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="max-w-3xl mx-auto text-center">
+                <h2 class="text-5xl md:text-6xl font-bold mb-8 animate-on-scroll">
+                    <span class="text-black">Travaillons</span>
+                    <span class="gradient-text block animate-gradient">ensemble</span>
+                </h2>
+                <p class="text-xl text-gray-600 mb-12 animate-on-scroll" style="animation-delay: 0.1s">
+                    Prêt à transformer votre vision digitale en réalité ? Contactez-nous pour une consultation stratégique.
+                </p>
+                
+                <!-- Informations de contact -->
+                <div class="grid md:grid-cols-3 gap-8 mb-16">
+                    <div class="space-y-4 animate-on-scroll">
+                        <div class="w-12 h-12 bg-black rounded-lg flex items-center justify-center mx-auto mb-4 animate-float">
+                            <i class="fas fa-envelope text-white"></i>
+                        </div>
+                        <h4 class="font-bold text-lg">Email</h4>
+                        <p class="text-gray-600 hover:text-black transition-colors">contact.nestcorp@gmail.com</p>
+                    </div>
+                    
+                    <div class="space-y-4 animate-on-scroll" style="animation-delay: 0.1s">
+                        <div class="w-12 h-12 bg-black rounded-lg flex items-center justify-center mx-auto mb-4 animate-float" style="animation-delay: 1s">
+                            <i class="fas fa-phone text-white"></i>
+                        </div>
+                        <h4 class="font-bold text-lg">Téléphone</h4>
+                        <p class="text-gray-600 hover:text-black transition-colors">+243 84 01 49 027</p>
+                    </div>
+                    
+                    <div class="space-y-4 animate-on-scroll" style="animation-delay: 0.2s">
+                        <div class="w-12 h-12 bg-black rounded-lg flex items-center justify-center mx-auto mb-4 animate-float" style="animation-delay: 2s">
+                            <i class="fas fa-map-marker-alt text-white"></i>
+                        </div>
+                        <h4 class="font-bold text-lg">Nous servons</h4>
+                        <p class="text-gray-600 hover:text-black transition-colors">Paris • New York • Singapore</p>
+                    </div>
+                </div>
+                
+                <!-- Bouton d'action principal -->
+                <a href="mailto:contact@nestcorporation.com" class="inline-flex items-center bg-black text-white px-12 py-5 rounded-lg font-medium text-lg hover:bg-gray-900 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl animate-on-scroll" style="animation-delay: 0.3s">
+                    <i class="fas fa-paper-plane mr-3 group-hover:rotate-12 transition-transform duration-300"></i>
+                    Envoyer un email
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Minimaliste -->
+    <footer class="bg-black text-white py-16 relative overflow-hidden">
+        <!-- Effet de particules -->
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-1/4 left-1/4 w-32 h-32 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full animate-float"></div>
+            <div class="absolute bottom-1/3 right-1/4 w-24 h-24 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full animate-float" style="animation-delay: 2s"></div>
+        </div>
+        
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-12">
+                <div class="mb-8 md:mb-0 animate-on-scroll">
+                    <div class="flex items-center mb-6">
+                        <div class="h-10 w-10 gradient-bg rounded-lg flex items-center justify-center mr-3 animate-pulse-glow">
+                            <span class="text-white font-bold text-lg">N</span>
+                        </div>
+                        <span class="text-2xl font-bold text-white">NestCorporation</span>
+                    </div>
+                    <p class="text-gray-400">Excellence digitale</p>
+                </div>
+                
+                <div class="flex space-x-6 animate-on-scroll" style="animation-delay: 0.1s">
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors transform hover:scale-125 hover:-translate-y-1 duration-300">
+                        <i class="fab fa-linkedin text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors transform hover:scale-125 hover:-translate-y-1 duration-300">
+                        <i class="fab fa-twitter text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors transform hover:scale-125 hover:-translate-y-1 duration-300">
+                        <i class="fab fa-github text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors transform hover:scale-125 hover:-translate-y-1 duration-300">
+                        <i class="fab fa-dribbble text-xl"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8 text-center animate-on-scroll" style="animation-delay: 0.2s">
+                <p class="text-gray-500">© 2024 NestCorporation. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Initialisation des animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Génération des particules
+            function createParticles() {
+                const particlesContainer = document.getElementById('particles');
+                if (!particlesContainer) return;
+                
+                for (let i = 0; i < 20; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    
+                    // Taille aléatoire
+                    const size = Math.random() * 4 + 1;
+                    particle.style.width = `${size}px`;
+                    particle.style.height = `${size}px`;
+                    
+                    // Position aléatoire
+                    particle.style.left = `${Math.random() * 100}%`;
+                    particle.style.top = `${Math.random() * 100}%`;
+                    
+                    // Animation delay aléatoire
+                    particle.style.animationDelay = `${Math.random() * 5}s`;
+                    
+                    // Opacité aléatoire
+                    particle.style.opacity = Math.random() * 0.3 + 0.1;
+                    
+                    particlesContainer.appendChild(particle);
+                }
+            }
+            
+            // Animation des compteurs
+            function animateCounters() {
+                const counters = document.querySelectorAll('.counter');
+                
+                counters.forEach(counter => {
+                    const target = parseInt(counter.getAttribute('data-target'));
+                    const increment = target / 100;
+                    let current = 0;
+                    
+                    const updateCounter = () => {
+                        if (current < target) {
+                            current += increment;
+                            counter.textContent = Math.ceil(current);
+                            setTimeout(updateCounter, 20);
+                        } else {
+                            counter.textContent = target;
+                        }
+                    };
+                    
+                    // Démarrer l'animation quand visible
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                updateCounter();
+                                observer.unobserve(entry.target);
+                            }
+                        });
+                    });
+                    
+                    observer.observe(counter);
+                });
+            }
+            
+            // Animation au scroll
+            function animateOnScroll() {
+                const elements = document.querySelectorAll('.animate-on-scroll');
+                
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                        }
+                    });
+                }, {
+                    threshold: 0.1,
+                    rootMargin: '0px 0px -50px 0px'
+                });
+                
+                elements.forEach(element => {
+                    observer.observe(element);
+                });
+            }
+            
+            // Menu mobile (simplifié - pas de menu déroulant dans cette version)
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            if (mobileMenuBtn) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    // Pour une version plus complète, on pourrait ajouter un menu déroulant
+                    document.querySelectorAll('nav a[href^="#"]').forEach(link => {
+                        link.style.display = link.style.display === 'block' ? 'none' : 'block';
+                    });
+                });
+            }
+            
+            // Smooth scrolling
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Effet de parallaxe sur les éléments flottants
+            window.addEventListener('scroll', () => {
+                const scrolled = window.pageYOffset;
+                const parallaxElements = document.querySelectorAll('.animate-float');
+                
+                parallaxElements.forEach((element, index) => {
+                    const speed = 0.5 + (index * 0.1);
+                    element.style.transform = `translateY(${scrolled * speed * 0.05}px)`;
+                });
+            });
+            
+            // Effet de curseur personnalisé (optionnel)
+            const cursor = document.createElement('div');
+            cursor.style.position = 'fixed';
+            cursor.style.width = '20px';
+            cursor.style.height = '20px';
+            cursor.style.borderRadius = '50%';
+            cursor.style.background = 'linear-gradient(45deg, #0066FF, #00D4FF)';
+            cursor.style.pointerEvents = 'none';
+            cursor.style.zIndex = '9999';
+            cursor.style.mixBlendMode = 'difference';
+            cursor.style.opacity = '0';
+            cursor.style.transition = 'opacity 0.3s, transform 0.1s';
+            document.body.appendChild(cursor);
+            
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.left = e.clientX - 10 + 'px';
+                cursor.style.top = e.clientY - 10 + 'px';
+                cursor.style.opacity = '0.7';
+            });
+            
+            document.addEventListener('mouseleave', () => {
+                cursor.style.opacity = '0';
+            });
+            
+            document.addEventListener('mousedown', () => {
+                cursor.style.transform = 'scale(0.8)';
+            });
+            
+            document.addEventListener('mouseup', () => {
+                cursor.style.transform = 'scale(1)';
+            });
+            
+            // Initialisation
+            createParticles();
+            animateCounters();
+            animateOnScroll();
+            
+            // Animation initiale
+            setTimeout(() => {
+                document.body.classList.add('loaded');
+            }, 100);
+        });
+    </script>
+</body>
+</html>
